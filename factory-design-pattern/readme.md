@@ -1,3 +1,5 @@
+### Factory Design Pattern: Write Once, Extend Forever
+
 You know that time when you have a very nice if-else block and your boss tells you, Hey, can we add one more option?
 
 The one sentence typically implies that you need to break open your clean code, push another condition into an already growing monster and hope that you did not mess with the logic that had already been in place to accommodate the ten previously existing choices.
@@ -146,7 +148,7 @@ func main() {
 
         // Ask the factory for a PaymentProcessor
         PaymentProcessor, err := payment.PaymentFactory(method)
-        
+
         if err != nil {
             fmt.Println(err)
             continue // Skip if method not found
@@ -165,6 +167,7 @@ This is you at the coffee shop counter. You do not need to know how to make a ca
 This is the actual payoff. We would like to include bKash support.
 
 What is it we should change?
+
 - payment/types.go: Create a new struct BKash.
 - payment/factory.go: Add a new case, bkash.
 - main.go: Do not touch. Not even one of the characters.
@@ -190,9 +193,11 @@ Run it again. The loop works well with bkash. The main.go file is Closed to Modi
 
 This is like your coffee shop adding a Mocha to the menu. The barista learns a new recipe (new case in factory). The menu board gets updated (new struct in types.go). But you, the customer, still walk up to the counter and say "One Mocha, please." Your ordering process does not change.
 
-## Bonus Deep Dive: What is PaymentProcessor Really?
+![Factory Design Pattern](factory-design-pattern/factory-pattern.png)
 
-When developing, you may peep under the hood with the reflect package. You may wonder: Why does reflect show *payment.CreditCard in case the Factory is returning a Payment interface?
+## And one more thing: What is PaymentProcessor Really?
+
+When developing, you may peep under the hood with the reflect package. You may wonder: Why does reflect show \*payment.CreditCard in case the Factory is returning a Payment interface?
 
 This is a great question, and knowing it elevates you to a better Go developer.
 
@@ -209,6 +214,6 @@ PaymentProcessor, _ := payment.PaymentFactory("creditcard")
 fmt.Printf("Type: %T\n", PaymentProcessor) // Output: *payment.CreditCard (The liquid inside!)
 ```
 
-The Factory pattern is good since the caller never touches anything other than The Cup (Payment). It is The Barista (Factory) who is allowed to pour The Liquid (*CreditCard). It is this decoupling that makes your code so flexible.
+The Factory pattern is good since the caller never touches anything other than The Cup (Payment). It is The Barista (Factory) who is allowed to pour The Liquid (\*CreditCard). It is this decoupling that makes your code so flexible.
 
 Next time your boss asks for a new payment method, you can confidently say: "Sure, give me two minutes." And you will not even break a sweat. Just like adding a new syrup to the coffee bar.
