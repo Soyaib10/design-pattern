@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Soyaib10/factory-design-pattern/payment-gateway-go/payment-gateway-go/payment"
+	"github.com/Soyaib10/factory-design-pattern/payment-gateway-go/payment"
 )
 
 func main() {
