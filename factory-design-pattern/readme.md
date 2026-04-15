@@ -193,7 +193,7 @@ Run it again. The loop works well with bkash. The main.go file is Closed to Modi
 
 This is like your coffee shop adding a Mocha to the menu. The barista learns a new recipe (new case in factory). The menu board gets updated (new struct in types.go). But you, the customer, still walk up to the counter and say "One Mocha, please." Your ordering process does not change.
 
-![Factory Design Pattern](factory-design-pattern/factory-pattern.png)
+![Factory Design Pattern](factory-design-pattern/payment-gateway-go/factory-pattern.png)
 
 ## And one more thing: What is PaymentProcessor Really?
 
