@@ -1,28 +1,27 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/Soyaib10/factory-design-pattern/payment-gateway-go/payment-gateway-go/payment"
+)
 
 func main() {
-	paymentType := "paypal"
-	amount := 100.0
+	paymentTypes := []string{"creditcard", "paypal", "banktransfar", "bkash", "wth"}
 
-	processPayment(paymentType, amount)
-}
+	for _, paymentType := range paymentTypes {
+		fmt.Printf("Payment Type: %s\n", paymentType)
+		PaymentProcessor, err := payment.PaymentFactory(paymentType)
+		fmt.Printf("Type: %T\n", PaymentProcessor)
 
-func processPayment(paymentType string, amount float64) {
-	if paymentType == "creditcard" {
-		processCreditCardPayment(amount)
-	} else if paymentType == "paypal" {
-		processPaypalPayment(amount)
-	} else {
-		fmt.Println("unsupported")
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		err = PaymentProcessor.Pay(343.323)
+		if err != nil {
+			fmt.Println("payment failed\n", err)
+		}
 	}
-}
-
-func processCreditCardPayment(amount float64) {
-	fmt.Printf("credit card %f", amount)
-}
-
-func processPaypalPayment(amount float64) {
-	fmt.Printf("Paypal %f", amount)
 }
