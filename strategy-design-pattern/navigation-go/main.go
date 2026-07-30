@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Location struct {
 	Name string
@@ -26,6 +28,28 @@ func (r RouteResult) String() string {
 	)
 }
 
+type RouteStrategy interface {
+	BuildRoute(start Location, end Location) RouteResult
+}
+
+type CarRouteStrategy struct{}
+
+func (c CarRouteStrategy) BuildRoute(start Location, end Location) RouteResult {
+	distanceKm := 12.9
+	speedKmph := 40.4
+	durationMin := (distanceKm / speedKmph) * 60
+
+	return RouteResult{
+		Mode: "car",
+		Checkpoints: []Location{
+			start,
+			end,
+		},
+		DistanceKm: float32(distanceKm),
+		DurationMin: float32(durationMin),
+	}
+}
+
 func main() {
 	home := Location{
 		Name: "Home",
@@ -39,18 +63,7 @@ func main() {
 		Lng:  40.234,
 	}
 
-	fmt.Println("Start point:", home)
-	fmt.Println("End point:", airport)
-
-	sampleResult := RouteResult{
-		Mode: "car",
-		Checkpoints: []Location{
-			home,
-			airport,
-		},
-		DistanceKm: 32.3,
-		DurationMin: 234.3,
-	}
-
-	fmt.Println("\nResult: ", sampleResult)
+	var strategy RouteStrategy = CarRouteStrategy{}
+	result := strategy.BuildRoute(home, airport)
+	fmt.Println(result)
 }
