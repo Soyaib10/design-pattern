@@ -2,42 +2,55 @@ package main
 
 import "fmt"
 
-// This is still the "bad" version.
-// It is intentionally written this way
-// so that the problem becomes obvious.
+type Location struct {
+	Name string
+	Lat  float32
+	Lng  float32
+}
 
-func buildRoute(mode string, start string, end string) {
-	if mode == "car" {
-		// Calculation for driving
-		distanceKm := 12.0
-		speedKmph := 40.0
-		durationMin := (distanceKm / speedKmph) * 60
-		fmt.Printf("Car Route: %s to %s | Distance: %.1f km | Time: %.0f minutes\n",
-			start, end, distanceKm, durationMin)
-	} else if mode == "walk" {
-		// Calculation for walking
-		distanceKm := 3.0 // Walking route is shorter because of shortcuts
-		speedKmph := 5.0
-		durationMin := (distanceKm / speedKmph) * 60
-		fmt.Printf("Walking Route: %s to %s | Distance: %.1f km | Time: %.0f minutes\n",
-			start, end, distanceKm, durationMin)
-	} else if mode == "bus" {
-		// Calculation for bus travel, including stop delays
-		distanceKm := 14.0
-		speedKmph := 25.0
-		numStops := 5
-		stopDelayMin := 2.0
-		durationMin := (distanceKm/speedKmph)*60 + float64(numStops)*stopDelayMin
-		fmt.Printf("Bus Route: %s to %s | Distance: %.1f km | Time: %.0f minutes (including stops)\n",
-			start, end, distanceKm, durationMin)
+func (l Location) String() string {
+	return fmt.Sprintf("%s (%.4f, %.4f)", l.Name, l.Lat, l.Lng)
+}
 
-	} else {
-		fmt.Println("This route type is not supported:", mode)
-	}
+type RouteResult struct {
+	Mode        string
+	Checkpoints []Location
+	DistanceKm  float32
+	DurationMin float32
+}
+
+func (r RouteResult) String() string {
+	return fmt.Sprintf(
+		"[%s] %d checkpoint(s) | distance: %.1f km | time: %.0f min",
+		r.Mode, len(r.Checkpoints), r.DistanceKm, r.DurationMin,
+	)
 }
 
 func main() {
-	buildRoute("car", "Home", "Airport")
-	buildRoute("walk", "Home", "Airport")
-	buildRoute("bus", "Home", "Airport")
+	home := Location{
+		Name: "Home",
+		Lat:  32.324,
+		Lng:  90.234,
+	}
+
+	airport := Location{
+		Name: "airport",
+		Lat:  31.324,
+		Lng:  40.234,
+	}
+
+	fmt.Println("Start point:", home)
+	fmt.Println("End point:", airport)
+
+	sampleResult := RouteResult{
+		Mode: "car",
+		Checkpoints: []Location{
+			home,
+			airport,
+		},
+		DistanceKm: 32.3,
+		DurationMin: 234.3,
+	}
+
+	fmt.Println("\nResult: ", sampleResult)
 }
