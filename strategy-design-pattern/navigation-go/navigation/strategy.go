@@ -19,7 +19,6 @@ func (c CarRouteStrategy) BuildRoute(start, end Location) RouteResult {
 	}
 }
 
-
 type WalkRouteStrategy struct{}
 
 func (w WalkRouteStrategy) BuildRoute(start, end Location) RouteResult {
@@ -35,7 +34,6 @@ func (w WalkRouteStrategy) BuildRoute(start, end Location) RouteResult {
 	}
 }
 
-
 type PublicTransportRouteStrategy struct {
 	NumStops     int
 	StopDelayMin float64
@@ -50,6 +48,21 @@ func (p PublicTransportRouteStrategy) BuildRoute(start, end Location) RouteResul
 
 	return RouteResult{
 		Mode:        "bus",
+		Checkpoints: []Location{start, end},
+		DistanceKm:  distanceKm,
+		DurationMin: durationMin,
+	}
+}
+
+type BicycleRouteStrategy struct{}
+
+func (b BicycleRouteStrategy) BuildRoute(start Location, end Location) RouteResult {
+	distanceKm := 25.8
+	speedKmph := 12.3
+	durationMin := (distanceKm / speedKmph) * 60
+
+	return RouteResult{
+		Mode:        "bicycle",
 		Checkpoints: []Location{start, end},
 		DistanceKm:  distanceKm,
 		DurationMin: durationMin,

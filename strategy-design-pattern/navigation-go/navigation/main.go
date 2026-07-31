@@ -10,6 +10,8 @@ func strategyFromMode(mode string) (RouteStrategy, error) {
 		return WalkRouteStrategy{}, nil
 	case "bus":
 		return PublicTransportRouteStrategy{NumStops: 5, StopDelayMin: 2.0}, nil
+	case  "bicycle":
+		return BicycleRouteStrategy{}, nil
 	default:
 		return nil, fmt.Errorf("unsupported mode: %q", mode)
 	}
